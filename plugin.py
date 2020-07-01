@@ -108,7 +108,7 @@ class FinalFantasyXIVPlugin(Plugin):
             return [ Game(game_id = 'final_fantasy_xiv_shadowbringers', game_title = 'Final Fantasy XIV: A Realm Reborn', dlcs = dlcs, license_info = LicenseInfo(license_type = license_type)) ]
 
         dlc_folder = install_folder + "\\game\\sqpack\\"
-        dlclist = [ item for item in os.listdir(dlc_folder) if os.path.isdir(os.path.join(dlc_folder, item)) ]
+        dlclist = [ item for item in os.listdir(dlc_folder) if os.path.isdir(os.path.join(dlc_folder, item)) ] if os.path.exists(dlc_folder) else []
 
         for dlc in dlclist:
             if dlc == "ffxiv":
@@ -141,7 +141,7 @@ class FinalFantasyXIVPlugin(Plugin):
         account_friends = self._ffxiv_api.get_account_friends()
 
         for friend in account_friends:
-            friends.append(FriendInfo(friend['ID'], friend['Name']))
+            friends.append(FriendInfo(str(friend['ID']), friend['Name']))
 
         return friends
 
@@ -170,7 +170,7 @@ class FinalFantasyXIVPlugin(Plugin):
         achievements = list()
 
         for achievement in self._ffxiv_api.get_account_achievements():
-            achievements.append(Achievement(int(achievement['Date']), achievement['ID']))
+            achievements.append(Achievement(int(achievement['Date']), str(achievement['ID'])))
 
         return achievements
 
